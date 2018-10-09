@@ -22,7 +22,7 @@ namespace see_sharp
   
         public GPS DisplayInfo(string coord){
         
-        int pLatitude = 3;
+        int pLatitude = 3; 
         int pLongitude = 4;
         DateTime pTime = DateTime.Now;
         
