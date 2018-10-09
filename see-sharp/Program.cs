@@ -7,15 +7,30 @@ namespace see_sharp
     {
         static void Main(string[] args)
         {
-            GPS a = new GPS(2,9,DateTime.Now);
+        
+            GPS point = new GPS();
+            GPS point = DisplayInfo("alsdkfjalk");
             
-            Console.WriteLine("Latitude = {0} \nLongitude = {1}", a.Latitude, a.Longitude);
+            
+            //GPS point = new GPS(2,9,DateTime.Now);
+            Console.WriteLine("Latitude = {0} \nLongitude = {1} \nTime = {2}", point.Latitude, point.Longitude, point.Time);
+            Console.ReadKey();
+            
+            
             
         }
+  
+        public GPS DisplayInfo(string coord){
         
-        //public GPS DisplayInfo(string coord){
-        //return true;
-        //}
+        int pLatitude = 3;
+        int pLongitude = 4;
+        DateTime pTime = DateTime.Now;
+        
+        GPS p = new GPS(pLatitude, pLongitude, pTime);
+        
+        
+        return p;
+        }      
     }
     
    public class GPS
@@ -30,6 +45,7 @@ namespace see_sharp
             Longitude = longitude;
             Time = time;
         }
+        public GPS(string coord)
         
         
     }
