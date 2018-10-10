@@ -7,29 +7,43 @@ namespace see_sharp
     {
         static void Main(string[] args)
         {
-        
             GPS point = new GPS("$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47");
-            //GPS point = DisplayInfo("alsdkfjalk");
             
-            //GPS point = new GPS(2,9,DateTime.Now);
-            Console.WriteLine("Latitude = {0} \nLongitude = {1} \nTime = {2}", point.Latitude, point.Longitude, point.Time);            
+            Console.WriteLine("Latitude: {0} {1} \nLongitude: {2} {3} \nTime: {4} \nQuality: {5} \n#SVs: {6} \nHDOP: {7} \nOrthometric height: {8} {9} \nGeoid separation: {10} {11} \nRecord Age: {12}",
+                              point.Latitude,
+                              point.LatDirection,
+                              point.Longitude,
+                              point.LongDirection,
+                              point.Time,
+                              point.Quality,
+                              point.Svs,
+                              point.HDOP,
+                              point.Oheight,
+                              point.OheightType,
+                              point.Geoid,
+                              point.GeoidType,
+                              point.Age);            
         }
-  
     }
     
    public class GPS
     {
-        public decimal  Latitude    { get; set; }
-        public decimal  Longitude   { get; set; }
-        public string   Time        { get; set; }
-        
-        //public GPS(int latitude, int longitude, DateTime time)
-        //{
-        //    Latitude = latitude;
-        //    Longitude = longitude;
-        //    Time = time;
-        //}
-        
+        public decimal  Latitude      { get; set; }
+        public decimal  Longitude     { get; set; }
+        public string   Time          { get; set; }
+        public string   LatDirection  { get; set; }
+        public string   LongDirection { get; set; }
+        public string   Quality       { get; set; }
+        public string   Svs           { get; set; }
+        public string   HDOP          { get; set; }
+        public string   Oheight       { get; set; }
+        public string   OheightType   { get; set; }
+        public string   Geoid         { get; set; }
+        public string   GeoidType     { get; set; }
+        public string   Age           { get; set; }
+
+
+
         public GPS(string coord)
         {
             string[] NMEA = coord.Split(',');
@@ -40,19 +54,41 @@ namespace see_sharp
             string mm = time.Substring(2,2);
             string ss = time.Substring(4,2);
             string formattedTime = String.Format("{0}:{1}:{2}", hh, mm, ss);
-            //Console.WriteLine(formattedTime);
-            //DateTime pDateAndTime = DateTime.Parse(formattedTime);
-            //DateTime pTime = pDateAndTime;
+            
+            switch (NMEA[6])
+            {
+                case "0":
+                    Quality = "Fix not valid";
+                    break;
+                case "1":
+                    Quality = "GPS fix";
+                    break;
+                case "2":
+                    Quality = "Differential GPS fix, OmniSTAR VBS";
+                    break;
+                case "4":
+                    Quality = "Real-Time Kinematic, fixed integers";
+                    break;
+                case "5":
+                    Quality = "Real-Time Kinematic, float integers, OmniSTAR XP/HP or Location RTK";
+                    break;
+                default:
+                    Quality = "N/A";
+                    break;
+            }
             Latitude = pLatitude;
             Longitude = pLongitude;
             Time = formattedTime;
-            //GPS p = new GPS(pLatitude, pLongitude, pTime);
-            
-            //return p;
-        //public GPS DisplayInfo(string coord){ 
+            LatDirection = NMEA[3];
+            LongDirection = NMEA[5];
+            Svs = NMEA[7];
+            HDOP = NMEA[8];
+            Oheight = NMEA[9];
+            OheightType = NMEA[10];
+            Geoid = NMEA[11];
+            GeoidType = NMEA[12];
+            Age = NMEA[13] == "" ? "N/A: DGPS is not used" : NMEA[13];
         }
-        
-        
     }
 }
 
